@@ -1,19 +1,23 @@
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from 'axios';
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
 
 const LoginPage = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
+  const {setUser} = useContext(UserContext);
 
   async function userLogin (event) {
 
     event.preventDefault(); // So it would not reload the page
 
     try {
-      await axios.post('/login', {email, password});
+      const userInfo = await axios.post('/login', {email, password});
+      setUser(userInfo);
       alert('Login Successful');
       setRedirect(true);
 
@@ -46,7 +50,7 @@ const LoginPage = () => {
         <button className="primary text-lg font-bold mt-4">Continue</button>
 
         <div className="text-center text-gray-500 mt-2">
-          Don't have an account yet? <Link to={'/register'} className="underline text-black">Register now</Link>
+          Don&apos;t have an account yet? <Link to={'/register'} className="underline text-black">Register now</Link>
         </div>
         
       </form>

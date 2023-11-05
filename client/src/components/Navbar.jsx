@@ -1,6 +1,10 @@
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../UserContext'
 
 const Header = () => {
+  const {user} = useContext(UserContext)
+
   return (
     <div className='flex justify-between'>
 
@@ -13,7 +17,7 @@ const Header = () => {
             <span className='font-bold text-xl'>MeshBnB</span>
         </Link>
 
-        <Link to={'/login'} className="hamburger-user-icon flex border border-gray-400 rounded-full py-2 px-4 gap-2 items-center">
+        <Link to={user?'/account':'/login'} className="hamburger-user-icon flex border border-gray-400 rounded-full py-2 px-4 gap-2 items-center">
 
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -25,6 +29,11 @@ const Header = () => {
                 </svg>
             </div>
             
+            {!!user && (
+                <div>
+                    {user.name}
+                </div>
+            )}
 
 
         </Link>
