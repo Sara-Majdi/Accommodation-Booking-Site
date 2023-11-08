@@ -7,7 +7,10 @@ const bcrypt = require('bcryptjs'); // This package is used to encrypt user's lo
 const jwt = require('jsonwebtoken');
 const User = require('./models/User'); //Importing UserModels from "User.js"
 const cookieParser = require('cookie-parser'); 
+const multer = require('multer'); //Middleware for handling multipart/form-data, which is primarily used for uploading files
 const imageDownloader = require('image-downloader'); // For downloading image to disk from a given URL
+const fs = require('fs')
+
 require('dotenv').config(); //Require this package to import enviromental variables from 'env' files succesfully 
 const app = express();
 
@@ -111,5 +114,22 @@ app.post('/upload-by-link', async (req, res) => {
 })
 
 
+// Upload Room Pictures from Device feature 
+const photosMiddleware = multer({ dest: 'uploads/' }); 
+app.post('/upload-from-device', photosMiddleware.array('photos', 100), (req, res) => {
+    const uploadedFiles = [];
+    for (let i = 0; i < req.files.length; i++) {  //Looping thru every photo file that is added from device
+        const {path, originalname} = req.files[i]; //Setting the photo's info to variables
+        const parts = originalname.split('.'); //Splitting the photo name into 2 parts 
+        const extension = parts[parts.length - 1]; //Just need the behind extension, eg: '.webp' or '.jpg'
+        const newPath = path + '.' + extension; //Creatinng a new name for the photo
+        fs.renameSync(path, newPath);
+        uploadedFiles.push(newPath.replace('uploads\\', '')); //Adding it into the empty array 
+    }
+
+    res.json(uploadedFiles);
+})
+
+
 // Server listening to port 4000
-app.listen(4000)
+app.listen(4000);
