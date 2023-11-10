@@ -5,7 +5,8 @@ const cors = require('cors');  // Allow Frontend Server communicate with Backend
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); // This package is used to encrypt user's login password 
 const jwt = require('jsonwebtoken');
-const User = require('./models/User'); //Importing UserModels from "User.js"
+const User = require('./models/User'); //Importing UserModel from "User.js"
+const Place = require('./models/Accommodation'); //Importing AccomodationModel from "Accomodation.js"
 const cookieParser = require('cookie-parser'); 
 const multer = require('multer'); //Middleware for handling multipart/form-data, which is primarily used for uploading files
 const imageDownloader = require('image-downloader'); // For downloading image to disk from a given URL
@@ -128,6 +129,28 @@ app.post('/upload-from-device', photosMiddleware.array('photos', 100), (req, res
     }
 
     res.json(uploadedFiles);
+})
+
+// Registering accommodations user added in the database
+app.post('/accommodations', (req, res) => {
+    const {token} = req.cookies;
+    const {
+        title, address, addedPhotos, 
+        description, perks, extraInfo,
+        checkInTime, checkOutTime, maxGuests, price,
+    } = req.body; 
+
+    jwt.verify(token, jwtSecret, {}, async (err, userData)=> {
+        if (err) throw err; 
+        const placeDoc = await Place.create({
+            owner: userData.id,
+            title, address, addedPhotos, 
+            description, perks, extraInfo,
+            checkInTime, checkOutTime, maxGuests, price,
+        })
+
+        res.json(placeDoc);
+    });
 })
 
 
