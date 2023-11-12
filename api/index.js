@@ -5,8 +5,8 @@ const cors = require('cors');  // Allow Frontend Server communicate with Backend
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); // This package is used to encrypt user's login password 
 const jwt = require('jsonwebtoken');
-const User = require('./models/User'); //Importing UserModel from "User.js"
-const Place = require('./models/Accommodation'); //Importing AccomodationModel from "Accomodation.js"
+const User = require('./models/User.js'); //Importing UserModel from "User.js"
+const Accommodation = require('./models/Accommodation.js'); //Importing AccomodationModel from "Accomodation.js"
 const cookieParser = require('cookie-parser'); 
 const multer = require('multer'); //Middleware for handling multipart/form-data, which is primarily used for uploading files
 const imageDownloader = require('image-downloader'); // For downloading image to disk from a given URL
@@ -37,13 +37,13 @@ app.get('/test', (req, res) => {
 
 // Register Page 
 app.post('/register', async (req, res) => {
-    const {name, email, password} = req.body;
+    const {name, email, password} = req.body; //Destructuring
     
     try{
         const userDoc = await User.create({
             name, 
             email, 
-            password:bcrypt.hashSync(password, bcryptSalt),
+            password:bcrypt.hashSync(password, bcryptSalt), //Encrypting the password so the real password cant be seen in the database
         });
 
         res.json(userDoc);
@@ -56,7 +56,7 @@ app.post('/register', async (req, res) => {
 
 // Login Page 
 app.post('/login', async(req, res) => {
-    const {email, password} = req.body; 
+    const {email, password} = req.body; //Destructuring 
 
     const userDoc = await User.findOne({email:email});
     if (userDoc) {
@@ -103,7 +103,7 @@ app.post('/logout', (req, res) => {
 
 // Upload Room Pictures by Link feature  
 app.post('/upload-by-link', async (req, res) => {
-    const {link} = req.body;
+    const {link} = req.body; //Destructuring
     const newName = 'photo' + Date.now() + '.jpg';
 
     await imageDownloader.image({
@@ -138,20 +138,62 @@ app.post('/accommodations', (req, res) => {
         title, address, addedPhotos, 
         description, perks, extraInfo,
         checkInTime, checkOutTime, maxGuests, price,
-    } = req.body; 
+    } = req.body; //Destructuring 
 
     jwt.verify(token, jwtSecret, {}, async (err, userData)=> {
         if (err) throw err; 
-        const placeDoc = await Place.create({
-            owner: userData.id,
+        const placeDoc = await Accommodation.create({
+            owner:userData.id,
             title, address, addedPhotos, 
             description, perks, extraInfo,
             checkInTime, checkOutTime, maxGuests, price,
-        })
+        });
 
         res.json(placeDoc);
     });
 })
+
+// Sending Accommodations details that user added, from the database, to be displayed at '/account/accommodations'
+app.get('/accommodations', (req, res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData)=> {
+        if (err) throw err;
+        const {id} = userData;
+        res.json( await Accommodation.find({owner: id}));
+    });
+
+});
+
+// Sending Accommodations details that user added, from the database, to be displayed at '/account/accommodations/:id'
+app.get('/accommodations/:id', async (req, res) => {
+    const {id} = req.params; //Getting the id from params
+    res.json(await Accommodation.findById(id)); // Finding the id in the database 
+}); 
+
+// Updating Accommodations data that user added in the database
+app.put('/accommodations', async (req, res) => {
+    const {token} = req.cookies;
+    const {
+        placeID, title, address, addedPhotos, 
+        description, perks, extraInfo,
+        checkInTime, checkOutTime, maxGuests, price,
+    } = req.body; //Destructuring 
+    jwt.verify(token, jwtSecret, {}, async (err, userData)=> {
+        if (err) throw err;
+        const placeDoc = await Accommodation.findById(placeID);
+        // console.log(userData.id);
+        // console.log(placeDoc.owner.toString());
+        if (userData.id === placeDoc.owner.toString()){
+            placeDoc.set({
+                title, address, addedPhotos, 
+                description, perks, extraInfo,
+                checkInTime, checkOutTime, maxGuests, price
+            });
+            await placeDoc.save();
+            res.json('Ok');
+        };
+    });
+});
 
 
 // Server listening to port 4000

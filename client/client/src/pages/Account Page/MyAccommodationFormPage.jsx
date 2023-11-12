@@ -1,12 +1,13 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 import Perks from '../../components/Account Page/MyAccommodation Page/Perks';
 import AccountPageNavbar from '../../components/Account Page/AccountPageNavbar';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 const MyAccommodationFormPage = () => {
 
-    // Initialize all States 
+    // Initialize all States and Params
+    const {placeID} = useParams();
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
     const [addedPhotos, setAddedPhotos] = useState([]);
@@ -17,8 +18,31 @@ const MyAccommodationFormPage = () => {
     const [checkInTime, setCheckInTime] = useState('');
     const [checkOutTime, setCheckOutTime] = useState('');
     const [maxGuests, setMaxGuests] = useState(1);
-    const [price, setPrice] = useState('');
-    const [redirect, setRedirect] = useState(false);
+    const [price, setPrice] = useState(1);
+    const [redirect, setRedirect] = useState(false); 
+    useEffect(() => {
+
+        if (!placeID){
+            return;
+        }
+
+        //Getting the data from Database, where users can Edit the details
+        //If the page is refreshed, the ORIGINAL data will still remain (Since its from the database) 
+        //If Users did not click on the 'Save' button, then the data will not be changed 
+        axios.get('/accommodations/' + placeID).then(response => {
+            const {data} = response;
+            setTitle(data.title);
+            setAddress(data.address);
+            setAddedPhotos(data.addedPhotos);
+            setDescription(data.description);
+            setPerks(data.perks);
+            setExtraInfo(data.extraInfo);
+            setCheckInTime(data.checkInTime);
+            setCheckOutTime(data.checkOutTime);
+            setMaxGuests(data.maxGuests);
+            setPrice(data.price);
+        });
+    }, [placeID]);
 
     // All Functions 
     async function uploadPhotoByLink (event) {
@@ -45,15 +69,23 @@ const MyAccommodationFormPage = () => {
         });
     }
 
-   async function addNewPlace (event) {
+   async function savePlace (event) {
         event.preventDefault(); // So it would not reload the page
-        const {accommodationData} = {
+        const accommodationData = {
             title, address, addedPhotos, 
             description, perks, extraInfo,
             checkInTime, checkOutTime, maxGuests, price
         };
-        await axios.post('/accommodations', accommodationData);
-        setRedirect(true);
+        
+        if(placeID) {
+            //If there is a PlaceID, then Update
+            await axios.put('/accommodations', {placeID, ...accommodationData});
+            setRedirect(true);
+        } else{
+            ////If there is no PlaceID, then Add New Place
+            await axios.post('/accommodations', accommodationData);
+            setRedirect(true);
+        }
    }
 
    if (redirect) {
@@ -64,7 +96,7 @@ const MyAccommodationFormPage = () => {
     <div >
         <AccountPageNavbar /> {/*Importing Nav Links*/}
 
-        <form onSubmit={addNewPlace} >
+        <form onSubmit={savePlace} >
 
             {/*Title Input Section*/}
             <h2 className='text-2xl font-semibold  mt-6 ' >Title</h2>
