@@ -153,14 +153,14 @@ app.post('/accommodations', (req, res) => {
     });
 })
 
-// Sending Accommodations details that user added, from the database, to be displayed at '/account/accommodations'
-app.get('/accommodations', (req, res) => {
+// Sending Accommodations details that A CERTAIN USER added, from the database, to be displayed at '/account/accommodations'
+app.get('/user-accommodations', (req, res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData)=> {
         if (err) throw err;
         const {id} = userData;
-        res.json( await Accommodation.find({owner: id}));
-    });
+        //Places registered under the same 'owner' id will all be sent and displayed at '/account/accommodations'
+        res.json( await Accommodation.find({owner: id})); });
 
 });
 
@@ -193,6 +193,12 @@ app.put('/accommodations', async (req, res) => {
             res.json('Ok');
         };
     });
+});
+
+// Sending Accommodations details that ALL USERS added, from the database, to be displayed at Home Page
+app.get('/accommodations', async (req, res) => {
+    res.json(await Accommodation.find());
+
 });
 
 

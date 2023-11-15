@@ -206,7 +206,7 @@ const MyAccommodationFormPage = () => {
             {/*Check-In-Details Input Section*/}
             <h2 className='text-2xl font-semibold mt-6 ' >Booking Details</h2>
             <p className='text-sm text-gray-500 m-2'>Fill in booking details. Tip: Leave a time window for housekeeping between guests</p>
-            <div className="grid grid-cols-2 gap-2 mx-2 my-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mx-2 my-4">
                 <div className="font-medium">
                     <h3 className='' >Check In Time</h3>
                     <input 
@@ -248,7 +248,7 @@ const MyAccommodationFormPage = () => {
                     />
                 </div>
             </div>
-            <button className='primary font-bold mt-6'>
+            <button className='primary font-bold mt-2'>
                 Save
             </button>
         

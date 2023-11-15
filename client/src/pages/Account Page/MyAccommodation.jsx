@@ -8,7 +8,9 @@ const MyAccommodation = () => {
   const [accommodations, setAccommodations] = useState([]);
   useEffect(() => {
 
-    axios.get('/accommodations').then(({data}) => {
+    
+  // Getting Accommodations details that user added, from the database, to be displayed at '/account/accommodations'
+    axios.get('/user-accommodations').then(({data}) => {
       setAccommodations(data);
     });
   }, []);
@@ -37,13 +39,13 @@ const MyAccommodation = () => {
 
               <div className="flex h-32 w-32 shrink-0 bg-gray-300 rounded-lg">
                 {place.addedPhotos.length > 0 && (
-                  <img className='object-cover rounded-lg' src={'http://localhost:4000/uploads/'+ place.addedPhotos[0]} alt="Main Image" />
+                  <img className='object-cover rounded-lg' src={'http://localhost:4000/uploads/'+ place.addedPhotos[0]} alt="Main Unit Image" />
                 )}
               </div>
 
               <div className="grow-0 shrink">
                 <h2 className='text-xl mb-2 font-semibold'>{place.title}</h2>
-                <p className='text-sm p-2 text-justify whitespace-pre-line'>{place.description}</p>
+                <p className='text-sm p-2 text-justify whitespace-pre-line '>{place.description}</p>
               </div>
               
             </Link>
