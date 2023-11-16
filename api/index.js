@@ -47,6 +47,7 @@ app.post('/register', async (req, res) => {
         });
 
         res.json(userDoc);
+        
 
     } catch (e) {
         res.status(422).json(e);
@@ -60,7 +61,7 @@ app.post('/login', async(req, res) => {
 
     const userDoc = await User.findOne({email:email});
     if (userDoc) {
-        const passwordMatches = bcrypt.compareSync(password, userDoc.password)
+        const passwordMatches = bcrypt.compareSync(password, userDoc.password);
         if (passwordMatches) {
             jwt.sign({
                 email: userDoc.email, 
@@ -71,10 +72,10 @@ app.post('/login', async(req, res) => {
             })
             
         } else {
-            res.status(422).json('pass not ok')
+            res.status(422).json('Incorrect Password');
         }
     } else {
-        res.json('Email not found')
+        res.json('Email Not Found');
     }
 
 });
@@ -197,7 +198,7 @@ app.put('/accommodations', async (req, res) => {
 
 // Sending Accommodations details that ALL USERS added, from the database, to be displayed at Home Page
 app.get('/accommodations', async (req, res) => {
-    res.json(await Accommodation.find());
+    res.json(await Accommodation.find().maxTimeMS(30000)); // Set timeout to 30 seconds
 
 });
 

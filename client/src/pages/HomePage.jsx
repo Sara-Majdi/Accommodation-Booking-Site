@@ -6,7 +6,7 @@ const HomePage = () => {
   useEffect(() => {
     axios.get('/accommodations').then(response => {
 
-      setAccommodations([...response.data, ...response.data, ...response.data]);
+      setAccommodations([...response.data, ...response.data, ...response.data, ...response.data]);
     })
 
 

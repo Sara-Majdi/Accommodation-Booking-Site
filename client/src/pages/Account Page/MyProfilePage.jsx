@@ -7,7 +7,7 @@ import AccountPageNavbar from '../../components/Account Page/AccountPageNavbar';
 import MyBookingsPage from './MyBookingsPage';
 
 const ProfilePage = () => {
-  const [redirect, setRedirect] = useState(null);
+  const [redirect, setRedirect] = useState(false);
   const {ready, user, setUser} = useContext(UserContext);
   let {subpage} = useParams();
 
@@ -27,7 +27,11 @@ const ProfilePage = () => {
   async function logout () {
     await axios.post('/logout');
     setUser(null);
-    setRedirect('/'); 
+    setRedirect(true); 
+  }
+
+  if (redirect){
+    return <Navigate to={'/'} />
   }
 
 

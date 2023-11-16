@@ -22,7 +22,7 @@ const MyAccommodationFormPage = () => {
     const [redirect, setRedirect] = useState(false); 
     useEffect(() => {
 
-        if (!placeID){
+        if (!placeID){ //If User clicked on the 'Add New Button', then  this Form page will be displayed
             return;
         }
 
