@@ -228,7 +228,7 @@ const MyAccommodationFormPage = () => {
                     />
                 </div>
                 <div className="font-medium">
-                    <h3 className='' >Max Number of Guests</h3>
+                    <h3 className='' >Maximum Guests</h3>
                     <input 
                         type="number" 
                         placeholder='Less than 10'

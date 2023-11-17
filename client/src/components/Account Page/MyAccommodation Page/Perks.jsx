@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 
 
 const Perks = ({selected, onChange}) => {
 
-    //The paramater "selected" is "perks" state
-    //The paramater "onChange" is "setPerks" state
+    //The parameter "selected" is "perks" state
+    //The parameter "onChange" is "setPerks" state
     function handlePerksCheckbox (event) {
         const {name, checked} = event.target; //name returns input name, and checked returns true or false
         if (checked) {

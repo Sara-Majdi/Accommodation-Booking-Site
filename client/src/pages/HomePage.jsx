@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import SearchBar from "../components/SearchBar";
 
 const HomePage = () => {
 
+  // Initialize all States 
   const [searchTerm, setSearchTerm] = useState('');
   const [accommodations, setAccommodations] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => { 
+    //Get the places that are added in the database
     axios.get('/accommodations').then(response => {
-
+      // Display all those places 
       setAccommodations([...response.data, ...response.data, ...response.data, ...response.data]);
     })
 
@@ -17,10 +20,12 @@ const HomePage = () => {
   }, []);
 
   function searchFilter(place) {
-    if (searchTerm.toLowerCase() === ''){
+    if (searchTerm.toLowerCase() === ''){ 
+      //If nothing is typed in SearchBar, then return ALL PLACES 
       return place;
     }  else {
-      return place.address.toLowerCase().includes(searchTerm.toLowerCase());
+      //Filter the places with address, ONLY display the places that includes the typed searchTerm
+      return place.address.toLowerCase().includes(searchTerm.toLowerCase()); 
     }
   }
 
@@ -28,13 +33,13 @@ const HomePage = () => {
 
     <div >
 
-      < SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
 
       <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8" >
         {accommodations.length > 0 && accommodations.filter(searchFilter).map(place => (
 
-          <div className="" key={place.id}>
+          <Link to={'/accommodations/' + place._id} className="" key={place.id}>
             
             <div className="bg-gray-500 rounded-2xl">
               {place.addedPhotos?.[0] && (
@@ -52,7 +57,7 @@ const HomePage = () => {
               <p><span className="font-bold">RM{place.price}</span> per night</p>
             </div>
             
-          </div>
+          </Link>
 
         ))}
 

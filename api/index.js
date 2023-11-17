@@ -165,7 +165,7 @@ app.get('/user-accommodations', (req, res) => {
 
 });
 
-// Sending Accommodations details that user added, from the database, to be displayed at '/account/accommodations/:id'
+// Sending Accommodations details that users added, from the database, to be displayed at '/account/accommodations/:id'
 app.get('/accommodations/:id', async (req, res) => {
     const {id} = req.params; //Getting the id from params
     res.json(await Accommodation.findById(id)); // Finding the id in the database 
