@@ -2,8 +2,8 @@
 
 const Perks = ({selected, onChange}) => {
 
-    //The paramter "selected" is "perks" state
-    //The paramter "onChange" is "setPerks" state
+    //The paramater "selected" is "perks" state
+    //The paramater "onChange" is "setPerks" state
     function handlePerksCheckbox (event) {
         const {name, checked} = event.target; //name returns input name, and checked returns true or false
         if (checked) {
