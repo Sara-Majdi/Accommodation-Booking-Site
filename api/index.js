@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs'); // This package is used to encrypt user's lo
 const jwt = require('jsonwebtoken');
 const User = require('./models/User.js'); //Importing UserModel from "User.js"
 const Accommodation = require('./models/Accommodation.js'); //Importing AccomodationModel from "Accomodation.js"
+const Booking = require('./models/Booking.js') //Importing BookingModel from "Booking.js"
 const cookieParser = require('cookie-parser'); 
 const multer = require('multer'); //Middleware for handling multipart/form-data, which is primarily used for uploading files
 const imageDownloader = require('image-downloader'); // For downloading image to disk from a given URL
@@ -200,6 +201,24 @@ app.put('/accommodations', async (req, res) => {
 app.get('/accommodations', async (req, res) => {
     res.json(await Accommodation.find().maxTimeMS(30000)); // Set timeout to 30 seconds
 
+});
+
+app.post('/bookings', async (req, res) => {
+    const {
+        accommodationID, checkInTime, 
+        checkOutTime, guestsNum, 
+        guestsName, guestsPhoneNum, totalPrice
+    } = req.body; //Destructuring 
+
+    const bookingDoc = await Booking.create({
+        accommodationID, checkInTime, 
+        checkOutTime, guestsNum, 
+        guestsName, guestsPhoneNum, totalPrice,
+    }); 
+
+    res.json(bookingDoc);
+
+    
 });
 
 

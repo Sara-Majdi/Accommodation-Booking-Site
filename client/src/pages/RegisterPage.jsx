@@ -8,31 +8,31 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function registerUser(event) {
+  async function registerUser(event) {
     event.preventDefault(); // So it would not reload the page
     const userData = {name, email, password};
 
 
-    axios.post('/register', userData)
-    .then(result => {
-      console.log(result.data);
-      alert('Registration successful. Now you can log in');
-    })
-    .catch(error => {
-      console.log(error);
-      alert('Registration failed. Please try again later');
-    });
+    // axios.post('/register', userData)
+    // .then(result => {
+    //   console.log(result.data);
+    //   alert('Registration successful. Now you can log in');
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    //   alert('Registration failed. Please try again later');
+    // });
 
-    // try{
-    //   const response = await axios.post('/register', userData);
-    //   console.log(response.data);
-    //   alert('Registration Successful. Now you can log in.');
+    try{
+      const response = await axios.post('/register', userData);
+      console.log(response.data);
+      alert('Registration Successful. Now you can log in.');
       
-    // } catch (error) {
+    } catch (error) {
 
-    //   console.log(error.response.data);
-    //   alert('Registration Failed. Please try again later.');
-    // }
+      console.log(error.response.data);
+      alert('Registration Failed. Please try again later.');
+    }
 
   }
 
@@ -42,7 +42,7 @@ const RegisterPage = () => {
       <form className="max-w-md mx-auto" onSubmit={registerUser}>
         <input 
           type="text" 
-          placeholder="Sara Mai"
+          placeholder="Enter Name"
           value={name}
           onChange={event => setName(event.target.value)} 
         />
