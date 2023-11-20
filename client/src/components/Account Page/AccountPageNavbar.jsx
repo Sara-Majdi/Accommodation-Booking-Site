@@ -9,7 +9,7 @@ const AccountPageNavbar = () => {
   }
 
   function linkClasses(type=null) {
-    let classes = 'py-2 sm:py-3 px-3 sm:px-6 font-semibold inline-flex items-center gap-3 sm:gap-2 rounded-full';
+    let classes = 'py-3 px-6 font-semibold inline-flex gap-2 rounded-full';
 
     if (type === subpage){
       classes += ' bg-primary text-white';

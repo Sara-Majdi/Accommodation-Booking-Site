@@ -42,7 +42,7 @@ const RegisterPage = () => {
       <form className="max-w-md mx-auto" onSubmit={registerUser}>
         <input 
           type="text" 
-          placeholder="Enter Name"
+          placeholder="Sara Mai"
           value={name}
           onChange={event => setName(event.target.value)} 
         />

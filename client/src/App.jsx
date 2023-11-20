@@ -11,7 +11,6 @@ import MyAccommodation from './pages/Account Page/MyAccommodation';
 import MyAccommodationFormPage from './pages/Account Page/MyAccommodationFormPage';
 import MyBookingsPage from './pages/Account Page/MyBookingsPage';
 import SingleAccommodationPage from './pages/SingleAccommodationPage';
-import SingleBookingPage from './pages/Account Page/SingleBookingPage';
 
 
 axios.defaults.baseURL = 'http://localhost:4000';
@@ -28,7 +27,6 @@ function App() {
           <Route path='/register' element={<RegisterPage />} />
           <Route path='/account' element={<ProfilePage />} />
           <Route path='/account/bookings' element={<MyBookingsPage />} />
-          <Route path='/account/bookings/:bookingID' element={<SingleBookingPage />} />
           <Route path='/account/accommodations' element={<MyAccommodation />} />
           <Route path='/account/accommodations/new' element={<MyAccommodationFormPage />} />
           <Route path='/account/accommodations/:placeID' element={<MyAccommodationFormPage />} />

@@ -45,7 +45,7 @@ const MyAccommodation = () => {
 
               <div className="grow-0 shrink">
                 <h2 className='text-xl mb-2 font-semibold'>{place.title}</h2>
-                <p className='text-sm p-2 text-justify whitespace-pre-line'>{place.description}</p>
+                <p className='text-sm p-2 text-justify whitespace-pre-line '>{place.description}</p>
               </div>
               
             </Link>

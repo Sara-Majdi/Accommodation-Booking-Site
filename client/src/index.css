@@ -12,11 +12,6 @@ input.search-bar {
     @apply border w-full rounded-full p-5 shadow-xl text-lg ;
 }
 
-input.booking-widget-inputs {
-    
-    @apply w-full border border-gray-300 py-2 px-2 rounded-xl mt-2;
-}
-
 button.primary{
     @apply w-full text-white bg-primary rounded-md py-4;
 }
