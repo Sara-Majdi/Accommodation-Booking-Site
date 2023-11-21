@@ -1,4 +1,4 @@
-import React from 'react'
+
 import AccountPageNavbar from '../../components/Account Page/AccountPageNavbar'
 
 const MyBookingsPage = () => {
