@@ -133,7 +133,7 @@ app.post('/upload-from-device', photosMiddleware.array('photos', 100), (req, res
     res.json(uploadedFiles);
 })
 
-// Registering accommodations user added in the database
+// Registering 'accommodations' that user have added in the database
 app.post('/accommodations', (req, res) => {
     const {token} = req.cookies;
     const {
@@ -162,7 +162,8 @@ app.get('/user-accommodations', (req, res) => {
         if (err) throw err;
         const {id} = userData;
         //Places registered under the same 'owner' id will all be sent and displayed at '/account/accommodations'
-        res.json( await Accommodation.find({owner: id})); });
+        res.json( await Accommodation.find({owner: id}));
+    });
 
 });
 
@@ -203,23 +204,38 @@ app.get('/accommodations', async (req, res) => {
 
 });
 
-app.post('/bookings', async (req, res) => {
+// Registering 'bookings' that user have added in the database
+app.post('/bookings', (req, res) => {
+
+    const {token} = req.cookies; //Destructuring 
     const {
-        accommodationID, checkInTime, 
+        accommodation, checkInTime, 
         checkOutTime, guestsNum, 
         guestsName, guestsPhoneNum, totalPrice
     } = req.body; //Destructuring 
 
-    const bookingDoc = await Booking.create({
-        accommodationID, checkInTime, 
-        checkOutTime, guestsNum, 
-        guestsName, guestsPhoneNum, totalPrice,
-    }); 
-
-    res.json(bookingDoc);
-
+    jwt.verify(token, jwtSecret, {}, async (err, userData)=> {
+        if (err) throw err;
+        const bookingDoc = await Booking.create({
+            accommodation, checkInTime, 
+            checkOutTime, guestsNum, 
+            guestsName, guestsPhoneNum, totalPrice, user:userData.id,
+        }); 
     
+        res.json(bookingDoc); 
+    });
 });
+
+// Sending Bookings details that A CERTAIN USER added, from the database, to be displayed at '/account/bookings'
+app.get('/bookings', (req, res) => {
+
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData)=> {
+        if (err) throw err;
+        //Bookings registered under the same user "id" will all be sent and displayed at '/account/bookings'
+        res.json( await Booking.find({user:userData.id}).populate('accommodation')) ;
+    });
+})
 
 
 // Server listening to port 4000

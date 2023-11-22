@@ -3,7 +3,7 @@ import { UserContext } from '../../UserContext';
 import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import MyAccommodation from './MyAccommodation';
-import AccountPageNavbar from '../../components/Account Page/AccountPageNavbar';
+import AccountPageNavbar from '../../components/AccountPageNavbar';
 import MyBookingsPage from './MyBookingsPage';
 
 const ProfilePage = () => {
@@ -40,7 +40,7 @@ const ProfilePage = () => {
       <AccountPageNavbar />
 
       {subpage === 'profile' && (
-        <div className="text-center max-w-lg mx-auto">
+        <div className="text-center max-w-lg mx-auto mt-8">
           Logged in as <span className='font-bold'>{user.name}</span> <span className='font-bold'>({user.email})</span> <br />
           <button onClick={logout} className='primary font-bold max-w-md mt-4'>Logout</button>
         </div>

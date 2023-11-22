@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { differenceInCalendarDays } from 'date-fns';
 import axios from 'axios';
 import { Navigate } from "react-router-dom";
+import { UserContext } from '../UserContext';
 
 const BookingWidget = ({accommodationsDetails}) => {
 
@@ -13,6 +14,13 @@ const BookingWidget = ({accommodationsDetails}) => {
     const [guestsName, setGuestsName] = useState('');
     const [guestsPhoneNum, setGuestsPhoneNum] = useState("");
     const [redirect, setRedirect] = useState('');
+
+    const {user} = useContext(UserContext);
+    useEffect(() =>{
+        if (user){
+            setGuestsName(user.name); //Fill in the Name input with logged in User's name
+        }
+    }, [user])
 
     let numOfNights = differenceInCalendarDays(new Date(checkOutTime), new Date(checkInTime));
     let accommodationPrice = 0;
@@ -36,13 +44,19 @@ const BookingWidget = ({accommodationsDetails}) => {
             checkInTime, 
             checkOutTime, guestsNum, 
             guestsName, guestsPhoneNum, totalPrice,
-            accommodationID : accommodationsDetails._id,
+            accommodation : accommodationsDetails._id,
         };
 
-        if (!guestsName){
+        if (!checkInTime){
+            alert('Please Fill In The Check In Date');
+        } else if (!checkOutTime){
+            alert('Please Fill In The Check Out Date');
+        } else if (!guestsName){
             alert('Please Fill In Your Name');
         } else if (!guestsPhoneNum){
             alert('Please Fill In Your Phone Number');
+        } else if (!guestsNum || guestsNum < 1){
+            alert('Please Fill In The Correct Number Of Guests');
         }
         else {
             const response = await axios.post('/bookings', bookingData);
@@ -83,12 +97,15 @@ const BookingWidget = ({accommodationsDetails}) => {
                 <div>
                     <div className="px-4 py-2 w-full border-t">
                         <label className="font-medium">Name: </label>
-                        <input type="text" value={guestsName} onChange={(event) => setGuestsName(event.target.value)} className="booking-widget-inputs" />
+                        <input type="text" placeholder="Your Name" value={guestsName} onChange={(event) => setGuestsName(event.target.value)} className="booking-widget-inputs" />
                     </div>
 
                     <div className="px-4 pt-2 pb-4  w-full border-t">
                         <label className="font-medium">Phone Number: </label>
-                        <input type="tel" value={guestsPhoneNum} onChange={(event) => setGuestsPhoneNum(event.target.value)} className="booking-widget-inputs" />
+                        <input 
+                            type="tel" placeholder="012-3456789" value={guestsPhoneNum} 
+                            onChange={(event) => setGuestsPhoneNum(event.target.value)} 
+                            className="booking-widget-inputs" />
                     </div>
                 </div>
                 

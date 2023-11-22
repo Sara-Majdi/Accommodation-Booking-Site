@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import AccountPageNavbar from '../../components/Account Page/AccountPageNavbar';
+import AccountPageNavbar from '../../components/AccountPageNavbar';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -7,11 +7,9 @@ const MyAccommodation = () => {
 
   const [accommodations, setAccommodations] = useState([]);
   useEffect(() => {
-
-    
-  // Getting Accommodations details that user added, from the database, to be displayed at '/account/accommodations'
-    axios.get('/user-accommodations').then(({data}) => {
-      setAccommodations(data);
+    // Getting Accommodations details that user added, from the database, to be displayed at '/account/accommodations'
+    axios.get('/user-accommodations').then((response) => {
+      setAccommodations(response.data);
     });
   }, []);
 
@@ -32,10 +30,12 @@ const MyAccommodation = () => {
             </Link>
         </div>
 
-        <div className="mt-4 ">
+        <div className="mt-4">
           {accommodations.length > 0 && accommodations.map(place => (
 
-            <Link to={'/account/accommodations/' + place._id} className="flex gap-4 mb-4 bg-gray-100 rounded-2xl p-4" key={place}>
+            <Link to={'/account/accommodations/' + place._id} key={place} 
+              className="flex gap-4 mb-4 bg-gray-100 rounded-2xl p-4 border border-gray-300" 
+            >
 
               <div className="flex h-32 w-32 shrink-0 bg-gray-300 rounded-lg">
                 {place.addedPhotos.length > 0 && (
@@ -44,8 +44,8 @@ const MyAccommodation = () => {
               </div>
 
               <div className="grow-0 shrink">
-                <h2 className='text-xl mb-2 font-semibold'>{place.title}</h2>
-                <p className='text-sm p-2 text-justify whitespace-pre-line'>{place.description}</p>
+                <h2 className='text-2xl mb-2 font-semibold'>{place.title}</h2>
+                <p className='text-sm py-2 text-justify whitespace-pre-line'>{place.description}</p>
               </div>
               
             </Link>

@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import Perks from '../../components/Account Page/MyAccommodation Page/Perks';
-import AccountPageNavbar from '../../components/Account Page/AccountPageNavbar';
+import Perks from '../../components/Perks';
+import AccountPageNavbar from '../../components/AccountPageNavbar';
 import { Navigate, useParams } from 'react-router-dom';
 
 const MyAccommodationFormPage = () => {

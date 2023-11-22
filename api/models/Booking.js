@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 // Define Schema for the Models 
 const BookingSchema = new mongoose.Schema({
-    accommodationID : {type: mongoose.Schema.Types.ObjectId, required: true},
+    accommodation : {type: mongoose.Schema.Types.ObjectId, required: true, ref:'Accommodation'},
+    user : {type: mongoose.Schema.Types.ObjectId, required: true},
     checkInTime: {type: Date, required:true},
     checkOutTime: {type: Date, required:true},
     guestsNum: {type: Number, required:true},
