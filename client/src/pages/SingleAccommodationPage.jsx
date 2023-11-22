@@ -35,6 +35,18 @@ const SingleAccommodationPage = () => {
         {/*ACCOMMODATION PICTURES */}
         < AccommodationGallery accommodationsDetails={accommodationsDetails} />
 
+        {/*ACCOMMODATION Perks */}
+        <div className="mt-8">
+            <h2 className="text-2xl font-semibold">Perks</h2>
+            <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+                {accommodationsDetails.perks.length > 1 && accommodationsDetails.perks.map(perk => (
+                    <div key={perk.name} className="flex items-center p-4 border rounded-2xl gap-2 ">
+                        <p className="font-medium">{perk}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+
         {/*ACCOMMODATION DESCRIPTION */}
         <div className="mt-8">
             <h2 className="text-2xl font-semibold">Description</h2>

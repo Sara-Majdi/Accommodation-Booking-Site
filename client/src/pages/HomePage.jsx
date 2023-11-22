@@ -14,7 +14,7 @@ const HomePage = () => {
 
   useEffect(() => { 
     //Get the places that are added in the database
-    axios.get('/accommodations').then(response => {
+    axios.get('/all-accommodations').then(response => {
       // Display all those places 
       setAccommodations([...response.data, ...response.data, ...response.data, ...response.data]);
     })
@@ -39,7 +39,7 @@ const HomePage = () => {
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
 
-      <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10" >
+      <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-x-6 gap-y-10" >
         {accommodations.length > 0 && accommodations.filter(searchFilter).map(place => (
 
           <Link to={user?'/accommodations/' + place._id:'/login'} className="" key={place.id}>

@@ -51,16 +51,19 @@ const BookingWidget = ({accommodationsDetails}) => {
             alert('Please Fill In The Check In Date');
         } else if (!checkOutTime){
             alert('Please Fill In The Check Out Date');
+        } else if (numOfNights <= 0){
+            alert('Please Fill In A Correct Check Out Date');
         } else if (!guestsName){
             alert('Please Fill In Your Name');
         } else if (!guestsPhoneNum){
             alert('Please Fill In Your Phone Number');
         } else if (!guestsNum || guestsNum < 1){
             alert('Please Fill In The Correct Number Of Guests');
-        }
+        } 
         else {
             const response = await axios.post('/bookings', bookingData);
             const bookingID = response.data._id;
+            alert('You Have Successfully Booked This Accommodation');
             setRedirect('/account/bookings/' + bookingID);
         }
         

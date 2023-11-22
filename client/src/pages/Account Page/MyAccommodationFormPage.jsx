@@ -22,7 +22,7 @@ const MyAccommodationFormPage = () => {
     const [redirect, setRedirect] = useState(false); 
     useEffect(() => {
 
-        if (!placeID){ //If User clicked on the 'Add New Button', then  this Form page will be displayed
+        if (!placeID){ 
             return;
         }
 
@@ -47,11 +47,15 @@ const MyAccommodationFormPage = () => {
     // All Functions 
     async function uploadPhotoByLink (event) {
         event.preventDefault(); // So it would not reload the page
-        const {data:filename} = await axios.post('/upload-by-link', {link: photoLink});
-        setAddedPhotos(prev => {
-            return [...prev, filename]
-        });
-        setPhotoLink('');
+        if (!photoLink){
+            alert('Please Fill In The Photo Link')
+        } else {
+            const {data:filename} = await axios.post('/upload-by-link', {link: photoLink});
+            setAddedPhotos(prev => {
+                return [...prev, filename]
+            });
+            setPhotoLink('');
+        }
     }
 
     async function uploadPhotoFromDevice(event) {
@@ -88,15 +92,47 @@ const MyAccommodationFormPage = () => {
             description, perks, extraInfo,
             checkInTime, checkOutTime, maxGuests, price
         };
-        
-        if(placeID) {
-            //If there is a PlaceID, then Update
+
+        if (!title){
+            alert('Please Fill In Your Accommodation Title');
+        } else if (!address){
+            alert('Please Fill In Your Accommodation Address');
+        } else if (!addedPhotos || addedPhotos.length < 1){
+            alert('Please Upload At Least One Photo For Your Accommodation');
+        } else if (!description){
+            alert('Please Fill In Your Accommodation Description');
+        } else if (!perks || perks.length < 1){
+            alert('Please Select At Least One Perk For Your Accommodation');
+        } else if (!checkInTime){
+            alert('Please Fill In The Check In Time For Your Accommodation');
+        } else if (!checkOutTime){
+            alert('Please Fill In The Check In Time For Your Accommodation');
+        } else if (!maxGuests || maxGuests < 1){
+            alert('Please Fill In The Correct Number Of Guests');
+        } else if (!price || price < 1){
+            alert('Please Fill In The Correct Price For Your Accommodation');
+        } else if (placeID) {
+            //If there is a PlaceID, then Update Accommodation Details
             await axios.put('/accommodations', {placeID, ...accommodationData});
+            alert('You Have Successfully Updated Your Accommodation Details');
             setRedirect(true);
-        } else{
-            ////If there is no PlaceID, then Add New Place
+        } else {
+            ////If there is no PlaceID, then Add New Accommodation
             await axios.post('/accommodations', accommodationData);
+            alert('You Have Successfully Added Your Accommodation');
             setRedirect(true);
+        }
+   }
+
+   async function deletePlace (event) {
+        if (placeID) {
+            event.preventDefault(); // So it would not reload the page
+            window.confirm('Are You Sure You Want To Delete Your Accommodation? Note That Your ')
+            await axios.delete('/accommodations/' + placeID);
+            alert('You Have Successfully Deleted Your Accommodation');
+            setRedirect(true);
+        } else {
+            return;
         }
    }
 
@@ -169,7 +205,7 @@ const MyAccommodationFormPage = () => {
 
                 <label className="flex h-32 cursor-pointer items-center justify-center gap-2 border p-8 rounded-2xl text-2xl" >
                     <input type="file" multiple className='hidden' onChange={uploadPhotoFromDevice} />
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 shrink-0">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                     </svg>
 
@@ -238,7 +274,7 @@ const MyAccommodationFormPage = () => {
                     />
                 </div>
                 <div className="font-medium">
-                    <h3 className='' >Price</h3>
+                    <h3 className='' >Price (RM)</h3>
                     <input 
                         type="number" 
                         placeholder='RM 500' 
@@ -248,9 +284,29 @@ const MyAccommodationFormPage = () => {
                     />
                 </div>
             </div>
-            <button className='primary font-bold mt-2'>
-                Save
-            </button>
+            
+            {   //If there is placeID, means the Accommodation is already registered, then display Delete button
+                placeID? (
+                    <div className='grid grid-cols-[3fr_1fr] gap-3'>
+                        <button className='primary font-bold mt-2'>
+                            Save Accommodation
+                        </button>
+
+                        <button onClick={deletePlace} className='bg-gray-200 font-bold mt-2 rounded-md px-4 text-center'>
+                            Delete Accommodation
+                        </button>
+                    </div>
+                ) //If no placeID, means the Accommodation is not registered, then don't display Delete button
+                : (
+                    <div className=''>
+                        <button className='primary font-bold mt-2'>
+                            Add Accommodation
+                        </button>
+                    </div>
+                )
+
+                
+            }
         
         </form>
     </div>

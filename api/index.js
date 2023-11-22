@@ -133,7 +133,7 @@ app.post('/upload-from-device', photosMiddleware.array('photos', 100), (req, res
     res.json(uploadedFiles);
 })
 
-// Registering 'accommodations' that user have added in the database
+// Registering and Adding 'accommodations' that user have added in the database
 app.post('/accommodations', (req, res) => {
     const {token} = req.cookies;
     const {
@@ -167,7 +167,7 @@ app.get('/user-accommodations', (req, res) => {
 
 });
 
-// Sending Accommodations details that users added, from the database, to be displayed at '/account/accommodations/:id'
+// Saving and Sending Accommodations details that users added, from the database, to be displayed at '/account/accommodations/:id'
 app.get('/accommodations/:id', async (req, res) => {
     const {id} = req.params; //Getting the id from params
     res.json(await Accommodation.findById(id)); // Finding the id in the database 
@@ -198,8 +198,24 @@ app.put('/accommodations', async (req, res) => {
     });
 });
 
+// Deleting Accommodation that users added from the database
+app.delete('/accommodations/:id', async (req, res) => {
+    const {id} = req.params; //Getting the id from params
+
+    // Use $lookup to find the Booking document based on the Accommodation id
+    const bookingDetails = await Booking.findOne({ accommodation:id }).populate('accommodation');
+    if (bookingDetails) {
+        const deleteBooking = await Booking.deleteOne(bookingDetails._id);
+        const deleteAccommodation = await Accommodation.findByIdAndDelete(id);
+        res.json([deleteBooking, deleteAccommodation]); 
+    } else {
+        res.json(await Accommodation.findByIdAndDelete(id));
+    }
+    
+}); 
+
 // Sending Accommodations details that ALL USERS added, from the database, to be displayed at Home Page
-app.get('/accommodations', async (req, res) => {
+app.get('/all-accommodations', async (req, res) => {
     res.json(await Accommodation.find().maxTimeMS(30000)); // Set timeout to 30 seconds
 
 });

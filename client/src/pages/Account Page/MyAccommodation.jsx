@@ -30,6 +30,12 @@ const MyAccommodation = () => {
             </Link>
         </div>
 
+        <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
+          {accommodations?.length <= 0 && (
+            <p className='text-center text-2xl font-semibold'>You Have Not Added Any Accommodations</p>
+          )}
+      </div>
+
         <div className="mt-4">
           {accommodations.length > 0 && accommodations.map(place => (
 
