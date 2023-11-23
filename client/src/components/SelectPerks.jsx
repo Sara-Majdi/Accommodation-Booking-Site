@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 
-const Perks = ({selected, onChange}) => {
+const SelectPerks = ({selected, onChange}) => {
 
     //The parameter "selected" is "perks" state
     //The parameter "onChange" is "setPerks" state
@@ -20,7 +20,7 @@ const Perks = ({selected, onChange}) => {
   
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-2">
         <label className="flex items-center p-4 border rounded-2xl gap-2 ">
             <input type="checkbox" checked={selected.includes('Free Wifi')} name='Free Wifi' onChange={handlePerksCheckbox} />
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -194,4 +194,4 @@ const Perks = ({selected, onChange}) => {
   )
 }
 
-export default Perks
+export default SelectPerks

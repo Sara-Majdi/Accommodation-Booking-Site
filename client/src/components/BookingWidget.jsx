@@ -8,8 +8,8 @@ import { UserContext } from '../UserContext';
 
 const BookingWidget = ({accommodationsDetails}) => {
 
-    const [checkInTime, setCheckInTime] = useState('');
-    const [checkOutTime, setCheckOutTime] = useState('');
+    const [checkInDate, setcheckInDate] = useState('');
+    const [checkOutDate, setcheckOutDate] = useState('');
     const [guestsNum, setGuestsNum] = useState(1);
     const [guestsName, setGuestsName] = useState('');
     const [guestsPhoneNum, setGuestsPhoneNum] = useState("");
@@ -22,8 +22,8 @@ const BookingWidget = ({accommodationsDetails}) => {
         }
     }, [user])
 
-    let numOfNights = differenceInCalendarDays(new Date(checkOutTime), new Date(checkInTime));
-    let accommodationPrice = 0;
+    let numOfNights = differenceInCalendarDays(new Date(checkOutDate), new Date(checkInDate));
+    let accommodationPriceForNumOfNights = 0;
     let serviceFee = 0;
     let totalPrice = 0;
     // console.log(numOfNights)
@@ -32,24 +32,25 @@ const BookingWidget = ({accommodationsDetails}) => {
         alert('Please Fill In Correct Dates');
     } else {
         //Price of the place for the selected nights
-        accommodationPrice = (numOfNights * accommodationsDetails.price); 
+        accommodationPriceForNumOfNights = (numOfNights * accommodationsDetails.price); 
         //Service Fee of this booking website, which is 2.5% of the total price
         serviceFee = Math.round((numOfNights * accommodationsDetails.price)*0.025);
         //Total price, including price for the selected nights, as well as the Service Fee
-        totalPrice = accommodationPrice + serviceFee;
+        totalPrice = accommodationPriceForNumOfNights + serviceFee;
     }
 
     async function bookAccommodation () {
         const bookingData = {
-            checkInTime, 
-            checkOutTime, guestsNum, 
-            guestsName, guestsPhoneNum, totalPrice,
+            checkInDate, 
+            checkOutDate, guestsNum, 
+            guestsName, guestsPhoneNum, numOfNights,
+            accommodationPriceForNumOfNights, serviceFee, totalPrice, 
             accommodation : accommodationsDetails._id,
         };
 
-        if (!checkInTime){
+        if (!checkInDate){
             alert('Please Fill In The Check In Date');
-        } else if (!checkOutTime){
+        } else if (!checkOutDate){
             alert('Please Fill In The Check Out Date');
         } else if (numOfNights <= 0){
             alert('Please Fill In A Correct Check Out Date');
@@ -59,6 +60,8 @@ const BookingWidget = ({accommodationsDetails}) => {
             alert('Please Fill In Your Phone Number');
         } else if (!guestsNum || guestsNum < 1){
             alert('Please Fill In The Correct Number Of Guests');
+        } else if (guestsNum > accommodationsDetails.maxGuests){
+            alert(`Please Fill In The Correct Number Of Guests.\nThis Accommodation Only Allows ${accommodationsDetails.maxGuests} Guests`);
         } 
         else {
             const response = await axios.post('/bookings', bookingData);
@@ -83,11 +86,11 @@ const BookingWidget = ({accommodationsDetails}) => {
             <div className="flex justify-evenly">
                 <div className="px-4 py-3 border-r w-full">
                     <label className="font-medium">Check In: </label>
-                    <input type="date" value={checkInTime} onChange={(event) => setCheckInTime(event.target.value)} />
+                    <input type="date" value={checkInDate} onChange={(event) => setcheckInDate(event.target.value)} />
                 </div>
                 <div className="px-4 py-3 w-full">
                     <label className="font-medium">Check Out: </label>
-                    <input type="date" value={checkOutTime} onChange={(event) => setCheckOutTime(event.target.value)} />
+                    <input type="date" value={checkOutDate} onChange={(event) => setcheckOutDate(event.target.value)} />
                 </div>
             </div>
             
@@ -119,26 +122,25 @@ const BookingWidget = ({accommodationsDetails}) => {
         <button onClick={bookAccommodation} className="primary mt-4 mb-8 text-xl  text-white font-bold">Book</button>
 
         
-            {numOfNights > 0 &&  (
-                <div>
-                    <div className="flex justify-between px-2">
-                        <p className="font-normal text-xl underline">RM{accommodationsDetails.price.toLocaleString()} x {numOfNights} Nights</p>
-                        <p className="font-medium text-xl ">RM{accommodationPrice.toLocaleString()}</p>
-                    </div>
+        {numOfNights > 0 &&  (
+            <div>
+                <div className="flex justify-between px-2">
+                    <p className="font-normal text-xl underline">RM{accommodationsDetails.price.toLocaleString()} x {numOfNights} Nights</p>
+                    <p className="font-medium text-xl ">RM{accommodationPriceForNumOfNights.toLocaleString()}</p>
+                </div>
 
-                    <div className="flex justify-between mt-4 px-2">
-                        <p className="font-normal text-xl underline">MeshBnB Service Fee</p>
-                        <p className="font-medium text-xl ">RM{serviceFee.toLocaleString()}</p>
-                    </div>
+                <div className="flex justify-between mt-4 px-2">
+                    <p className="font-normal text-xl underline">SM Booking Service Fee</p>
+                    <p className="font-medium text-xl ">RM{serviceFee.toLocaleString()}</p>
+                </div>
 
-                    <div className="flex justify-between mt-8 py-8 border-t border-gray-300">
-                        <p className="font-bold text-xl ">Total Price</p>
-                        <p className="font-bold text-xl ">RM{totalPrice.toLocaleString()}</p>
-                    </div>
+                <div className="flex justify-between mt-8 py-8 border-t border-gray-300">
+                    <p className="font-bold text-xl ">Total Price</p>
+                    <p className="font-bold text-xl ">RM{totalPrice.toLocaleString()}</p>
+                </div>
 
             </div>
-
-            )}
+        )}
         
         
     </div>

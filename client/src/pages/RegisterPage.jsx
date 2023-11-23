@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from 'axios';
 
 const RegisterPage = () => {
@@ -7,11 +7,11 @@ const RegisterPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isRegistered, setIsRegistered] = useState(false);
 
   async function registerUser(event) {
     event.preventDefault(); // So it would not reload the page
     const userData = {name, email, password};
-
 
     // axios.post('/register', userData)
     // .then(result => {
@@ -23,17 +23,30 @@ const RegisterPage = () => {
     //   alert('Registration failed. Please try again later');
     // });
 
-    try{
-      const response = await axios.post('/register', userData);
-      console.log(response.data);
-      alert('Registration Successful. Now you can log in.');
-      
-    } catch (error) {
-
-      console.log(error.response.data);
-      alert('Registration Failed. Please try again later.');
+    if (!name) {
+      alert('Please Fill In Your Name')
+    } else if (!email) {
+      alert('Please Fill In Your Email Address')
+    } else if (!password){
+      alert('Please Fill In Your Password') 
+    } 
+    else {
+      try{
+        const response = await axios.post('/register', userData);
+        console.log(response.data);
+        alert('Registration Successful. Now you can log in.');
+        setIsRegistered(true);
+        
+      } catch (error) {
+  
+        console.log(error.response.data);
+        alert('Registration Failed. Please try again later.');
+      }
     }
+  }
 
+  if(isRegistered) {
+    return <Navigate to={"/login"} /> // Redirects to Login Page
   }
 
   return (

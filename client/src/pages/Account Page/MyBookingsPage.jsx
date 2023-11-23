@@ -11,13 +11,17 @@ const MyBookingsPage = () => {
     axios.get('/bookings').then(response=> setBookings(response.data));
   }, [])
 
+
   return (
     <div>
       <AccountPageNavbar />
       
       <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
         {bookings?.length <= 0 && (
-          <p className='text-center text-2xl font-semibold'>You Have Not Made Any Booking</p>
+          <div>
+            <p className='text-center text-2xl font-semibold'>You Have Not Made Any Booking</p>
+            <p className='text-center mt-5 text-lg'>If The Booking You Have Made Is Not Displayed, It Indicates The Accommodation Owner Has Removed The Listing. </p>
+          </div>
         )}
       </div>
 
@@ -72,24 +76,34 @@ const MyBookingsPage = () => {
 
             <div>
               {bookings?.length > 0 && bookings.filter(booking => booking.accommodation?._id === undefined).map(booking => (
-                <div key={booking._id} className='flex gap-5 p-4  bg-gray-100 border border-gray-300 rounded-2xl overflow-hidden mt-4'>
+                <Link to={`/account/bookings/${booking._id}`} key={booking._id} className='flex gap-5 p-4  bg-gray-100 border border-gray-300 rounded-2xl overflow-hidden mt-4'>
 
                   <div  className='md:w-80 w-48 object-center'>
                     <img 
                       className='h-full object-cover object-center' 
                       src="https://i.pinimg.com/originals/2b/71/de/2b71de7c996e4b3e6297342eab770539.gif" 
-                      alt="Booking Not Found Picture" 
+                      alt="Sorry Picture" 
                     />
                   </div>
 
                   <div className='flex items-center justify-center text-center w-full mr-12 xl:mr-60'>
-                    <h1 className='text-2xl text-center font-bold'>The Accommodation Hosted Has Been Removed By The Owner</h1>
+                    <h1 className='text-xl sm:text-2xl text-center font-bold'>The Accommodation Hosted Has Been Removed By The Owner</h1>
                   </div>
-                </div>
+
+                  <div className='text-white bg-primary p-2 rounded-md h-10 mr-2 cursor-pointer' >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-6 h-6 font-bold">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+
+                  </div>
+
+                </Link>
                 
               ))}
             </div>
-
+            
+            <p className='text-center mt-5 text-lg'>If The Booking You Have Made Is Not Displayed, It Indicates The Accommodation Owner Has Removed The Listing. </p>
+          
           </div>
           
         )}

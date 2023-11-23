@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import Perks from '../../components/Perks';
+import SelectPerks from '../../components/SelectPerks';
 import AccountPageNavbar from '../../components/AccountPageNavbar';
 import { Navigate, useParams } from 'react-router-dom';
 
@@ -127,10 +127,12 @@ const MyAccommodationFormPage = () => {
    async function deletePlace (event) {
         if (placeID) {
             event.preventDefault(); // So it would not reload the page
-            window.confirm('Are You Sure You Want To Delete Your Accommodation? Note That Your ')
-            await axios.delete('/accommodations/' + placeID);
-            alert('You Have Successfully Deleted Your Accommodation');
-            setRedirect(true);
+            if (window.confirm("Are You Sure You Want To Delete Your Accommodation?\nNote That Your Bookings And Other User's Bookings For This Accommodation Will All Be Deleted As Well")) {
+                await axios.delete('/accommodations/' + placeID);
+                alert('You Have Successfully Deleted Your Accommodation');
+                setRedirect(true);
+            }
+            
         } else {
             return;
         }
@@ -227,7 +229,7 @@ const MyAccommodationFormPage = () => {
             {/*Perks Input Section*/}
             <h2 className='text-2xl font-semibold mt-6 ' >Perks</h2>
             <p className='text-sm text-gray-500 m-2'>Select all the perks of your place</p>
-            <Perks selected={perks} onChange={setPerks} />
+            <SelectPerks selected={perks} onChange={setPerks} />
 
             {/*Extra-Info Input Section*/}
             <h2 className='text-2xl font-semibold mt-8' >Extra Info</h2>
@@ -287,19 +289,19 @@ const MyAccommodationFormPage = () => {
             
             {   //If there is placeID, means the Accommodation is already registered, then display Delete button
                 placeID? (
-                    <div className='grid grid-cols-[3fr_1fr] gap-3'>
-                        <button className='primary font-bold mt-2'>
+                    <div className='grid grid-cols-[2fr_1fr] md:grid-cols-[3fr_1fr] gap-2 md:gap-3'>
+                        <button className='primary font-bold mt-2 text-lg'>
                             Save Accommodation
                         </button>
 
-                        <button onClick={deletePlace} className='bg-gray-200 font-bold mt-2 rounded-md px-4 text-center'>
+                        <button onClick={deletePlace} className='bg-gray-200 font-bold mt-2 rounded-md px-4 text-center text-lg'>
                             Delete Accommodation
                         </button>
                     </div>
                 ) //If no placeID, means the Accommodation is not registered, then don't display Delete button
                 : (
                     <div className=''>
-                        <button className='primary font-bold mt-2'>
+                        <button className='primary font-bold mt-2 text-lg'>
                             Add Accommodation
                         </button>
                     </div>

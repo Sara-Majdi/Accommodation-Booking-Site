@@ -1,16 +1,18 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams} from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import AccountPageNavbar from '../../components/AccountPageNavbar';
 import AccommodationTitleAndAddress from '../../components/AccommodationTitleAndAddress';
 import AccommodationGallery from '../../components/AccommodationGallery';
-import BookingWidget from "../../components/BookingWidget";
 import BookingDates from '../../components/BookingDates';
+import DisplaySelectedPerks from '../../components/DisplaySelectedPerks';
+import DeleteBookingWidget from '../../components/DeleteBookingWidget';
 
 const SingleBookingPage = () => {
 
   const {bookingID} = useParams();
   const [booking, setBooking] = useState(null);
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(()=> {
     axios.get('/bookings').then(result => {
@@ -22,8 +24,36 @@ const SingleBookingPage = () => {
 
   }, [bookingID]);
 
+  async function handleDelete (event) {
+    event.preventDefault(); // So it would not reload the page
+    await axios.delete('/bookings/' + bookingID);
+    setRedirect(true);
+  }
+
+  // Loading Screen 
   if(!booking){
     return '';
+  }
+
+  if (redirect){
+    return <Navigate to={'/account/bookings'} />
+  }
+
+  if(booking?.accommodation?._id === undefined){
+    return (
+      <div className='flex-col mt-32 mx-auto'>
+        <img 
+            className='h-full object-cover object-center mx-auto' 
+            src="https://i.pinimg.com/originals/2b/71/de/2b71de7c996e4b3e6297342eab770539.gif" 
+            alt="Sorry Picture" 
+          />
+        <p className='text-center text-2xl font-semibold'>The Accommodation Hosted Has Been Removed By The Owner</p>
+        <div className='w-3/4 self-center mx-auto'>
+          <button onClick={handleDelete} className='primary font-bold text-2xl mt-6'>Delete</button>
+        </div>
+        
+      </div>
+    );
   }
 
 
@@ -51,6 +81,10 @@ const SingleBookingPage = () => {
           {/*ACCOMMODATION PICTURES */}
           < AccommodationGallery accommodationsDetails={booking.accommodation}/>
 
+
+          {/*ACCOMMODATION PERKS */}
+          < DisplaySelectedPerks accommodationsDetails={booking.accommodation} />
+
           {/*ACCOMMODATION DESCRIPTION */}
           <div className="mt-8">
               <h2 className="text-2xl font-semibold">Description</h2>
@@ -58,7 +92,7 @@ const SingleBookingPage = () => {
           </div>
 
         
-          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 lg:gap-14 ">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 lg:gap-14 ">
       
             {/*ACCOMMODATION EXTRA INFO */}
             <div className="mt-8 lg:mt-10">
@@ -76,8 +110,8 @@ const SingleBookingPage = () => {
                   <p className="text-sm text-justify font-medium mb-1">Maximum Number of Guests: <span className="font-normal">{booking.accommodation.maxGuests}</span></p>
                 </div>
 
-                {/*BOOKING WIDGET */}
-                < BookingWidget accommodationsDetails={booking.accommodation} />
+                {/*DELETE BOOKING WIDGET */}
+                < DeleteBookingWidget booking={booking} />
 
               </div>
           </div>

@@ -15,15 +15,33 @@ const LoginPage = () => {
 
     event.preventDefault(); // So it would not reload the page
 
-    try {
-      const userInfo = await axios.post('/login', {email, password});
-      setUser(userInfo);
-      alert('Login Successful');
-      setLoggedIn(true);
+    if (!email) {
+      alert('Please Fill In Your Email Address')
+    } else if (!password){
+      alert('Please Fill In Your Password')
+    } 
+    else {
 
-    } catch (e){
-      alert('Login Failed');
+      const userInfo = await axios.post('/login', {email, password});
+      // console.log(userInfo)
+
+      if (userInfo.data === 'Email Not Found'){
+        alert(userInfo.data + '. Login Failed. Please Enter The Correct Email Address');
+
+      } else if (userInfo.data === 'Incorrect Password'){
+        alert(userInfo.data + '. Login Failed. Please Enter The Correct Password');
+
+      } else {
+        setUser(userInfo);
+        alert('Login Successful');
+        setLoggedIn(true);
+      }
+
+      
+      
     }
+
+    
   }
 
   if(isLoggedIn) {

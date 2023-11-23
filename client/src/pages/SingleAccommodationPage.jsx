@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom"
 import BookingWidget from "../components/BookingWidget";
 import AccommodationGallery from "../components/AccommodationGallery";
 import AccommodationTitleAndAddress from "../components/AccommodationTitleAndAddress";
+import DisplaySelectedPerks from "../components/DisplaySelectedPerks";
 
 
 const SingleAccommodationPage = () => {
@@ -35,17 +36,8 @@ const SingleAccommodationPage = () => {
         {/*ACCOMMODATION PICTURES */}
         < AccommodationGallery accommodationsDetails={accommodationsDetails} />
 
-        {/*ACCOMMODATION Perks */}
-        <div className="mt-8">
-            <h2 className="text-2xl font-semibold">Perks</h2>
-            <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
-                {accommodationsDetails.perks.length > 1 && accommodationsDetails.perks.map(perk => (
-                    <div key={perk.name} className="flex items-center p-4 border rounded-2xl gap-2 ">
-                        <p className="font-medium">{perk}</p>
-                    </div>
-                ))}
-            </div>
-        </div>
+        {/*ACCOMMODATION PERKS */}
+        < DisplaySelectedPerks accommodationsDetails={accommodationsDetails} />
 
         {/*ACCOMMODATION DESCRIPTION */}
         <div className="mt-8">
@@ -54,7 +46,7 @@ const SingleAccommodationPage = () => {
         </div>
 
         
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 lg:gap-14 ">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 lg:gap-14 ">
             
     
             {/*ACCOMMODATION EXTRA INFO */}
@@ -75,7 +67,6 @@ const SingleAccommodationPage = () => {
 
                 {/*BOOKING WIDGET */}
                 < BookingWidget accommodationsDetails={accommodationsDetails} />
-
             </div>
         </div>
     </div>

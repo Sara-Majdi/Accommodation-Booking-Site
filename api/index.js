@@ -1,4 +1,3 @@
-//mongo atlas password = ZsTUIpsJArf9lZl4
 
 const express = require('express'); 
 const cors = require('cors');  // Allow Frontend Server communicate with Backend Server while ensuring security
@@ -73,7 +72,7 @@ app.post('/login', async(req, res) => {
             })
             
         } else {
-            res.status(422).json('Incorrect Password');
+            res.json('Incorrect Password');
         }
     } else {
         res.json('Email Not Found');
@@ -225,17 +224,20 @@ app.post('/bookings', (req, res) => {
 
     const {token} = req.cookies; //Destructuring 
     const {
-        accommodation, checkInTime, 
-        checkOutTime, guestsNum, 
-        guestsName, guestsPhoneNum, totalPrice
+        accommodation, checkInDate, 
+        checkOutDate, guestsNum, 
+        guestsName, guestsPhoneNum, numOfNights,
+        accommodationPriceForNumOfNights, serviceFee, totalPrice, 
     } = req.body; //Destructuring 
 
     jwt.verify(token, jwtSecret, {}, async (err, userData)=> {
         if (err) throw err;
         const bookingDoc = await Booking.create({
-            accommodation, checkInTime, 
-            checkOutTime, guestsNum, 
-            guestsName, guestsPhoneNum, totalPrice, user:userData.id,
+            accommodation, checkInDate, 
+            checkOutDate, guestsNum, 
+            guestsName, guestsPhoneNum, numOfNights,
+            accommodationPriceForNumOfNights, serviceFee, 
+            totalPrice, user:userData.id,
         }); 
     
         res.json(bookingDoc); 
@@ -251,6 +253,12 @@ app.get('/bookings', (req, res) => {
         //Bookings registered under the same user "id" will all be sent and displayed at '/account/bookings'
         res.json( await Booking.find({user:userData.id}).populate('accommodation')) ;
     });
+})
+
+// Deleting Booking that users added from the database
+app.delete('/bookings/:id', async (req, res) => {
+    const {id} = req.params; //Getting the id from params
+    res.json(await Booking.findByIdAndDelete(id));
 })
 
 
