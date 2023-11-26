@@ -8,19 +8,19 @@ const Header = () => {
   return (
     <div className='flex justify-between'>
 
-        <Link to={'/'} className="logo-icon flex gap-2 items-center">
+        <Link to={'/'} className="logo-icon flex gap-1 sm:gap-2 items-center">
 
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 -rotate-90">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
             </svg>
 
-            <span className='font-bold text-xl'>SM Booking</span>
+            <span className='font-bold text:lg sm:text-xl'>SM Booking</span>
         </Link>
 
 
-        <Link to={user?'/account':'/login'} className="hamburger-user-icon flex border-2 border-black rounded-full p-4 gap-2 items-center">
+        <Link to={user?'/account':'/login'} className="hamburger-user-icon flex border-2 border-black rounded-full p-3 sm:p-4 gap-1 sm:gap-2 items-center">
 
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hidden sm:block">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
 
@@ -32,7 +32,7 @@ const Header = () => {
             
             {!!user && (
                 <div className='font-semibold'>
-                    {user.name}
+                    <p className=''>{user.name}</p>
                 </div>
             )}
 
@@ -46,7 +46,3 @@ const Header = () => {
 }
 
 export default Header
-
-
-
-

@@ -1,48 +1,6 @@
 /* eslint-disable react/prop-types */
-import {useState} from 'react';
-
-
-
-
-const AccommodationGallery = ({accommodationsDetails}) => {
-
-    const [showPhotos, setShowPhotos] = useState(false);
-
-    if (showPhotos) {
-        return (
-            <div className="min-h-screen inset-0 absolute bg-black">
-                
-                <div className="py-10 px-20 bg-black grid gap-4">
-                    <h2 className="text-white mb-2 text-3xl leading-10 font-semibold mr-28">{accommodationsDetails.title}</h2>
-
-                    <button 
-                        onClick={() => setShowPhotos(false)} 
-                        className="text-white flex gap-1 items-center bg-black border-4 border-white font-semibold px-4 py-2 rounded-lg fixed right-20"
-                    >
-
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-
-                        Close
-                    </button>
-
-                    {accommodationsDetails?.addedPhotos?.length > 0 && accommodationsDetails.addedPhotos.map(photo => (
-
-                        <div key={photo.id} className="grid place-items-center">
-                            <img 
-                                src={"http://localhost:4000/uploads/" + photo} 
-                                alt="Place Picture" 
-                                className="object-cover w-full"
-                            />
-                        </div>
-
-                    ))}
-                </div>
-            </div>
-        )
-    }
-
+/* eslint-disable react/prop-types */
+const AccommodationGallery = ({accommodationsDetails, setShowPhotos}) => {
 
     return (
         <div className="grid grid-cols-[2fr_1fr_1fr] gap-2 relative">
