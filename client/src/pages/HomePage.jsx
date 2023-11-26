@@ -16,7 +16,7 @@ const HomePage = () => {
     //Get the places that are added in the database
     axios.get('/all-accommodations').then(response => {
       // Display all those places 
-      setAccommodations([...response.data, ...response.data, ...response.data, ...response.data]);
+      setAccommodations([...response.data]);
     })
 
 
@@ -24,7 +24,7 @@ const HomePage = () => {
 
   function searchFilter(place) {
     if (searchTerm.toLowerCase() === ''){ 
-      //If nothing is typed in SearchBar, then return ALL PLACES 
+      //If nothing is typed in SearchBar, then return nothing 
       return place;
     }  else {
       //Filter the places with address, ONLY display the places that includes the typed searchTerm
@@ -57,7 +57,7 @@ const HomePage = () => {
             <h2 className="font-bold truncate mt-2">{place.address}</h2>
             <h3 className="text-gray-500 text-sm mt-1 truncate">{place.title}</h3>
             <div className="mt-1">
-              <p><span className="font-bold">RM{place.price}</span> per night</p>
+              <p><span className="font-bold">RM{place.price.toLocaleString()}</span> per night</p>
             </div>
             
           </Link>

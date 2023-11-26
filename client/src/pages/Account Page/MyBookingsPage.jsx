@@ -16,7 +16,7 @@ const MyBookingsPage = () => {
     <div>
       <AccountPageNavbar />
       
-      <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
+      <div className='mt-16'>
         {bookings?.length <= 0 && (
           <div>
             <p className='text-center text-2xl font-semibold'>You Have Not Made Any Booking</p>
@@ -35,7 +35,7 @@ const MyBookingsPage = () => {
               {bookings.filter(booking => booking.accommodation?._id !== undefined).map(booking => (
 
                 <Link to={`/account/bookings/${booking._id}`} key={booking.title} 
-                  className='flex gap-5 bg-gray-100 border border-gray-300 rounded-2xl overflow-hidden mt-4'
+                  className='flex gap-2 md:gap-5 bg-gray-100 border border-gray-300 rounded-2xl overflow-hidden mt-4'
                 >
                   <div className="md:w-80 w-48 shrink-0">
                     {booking?.accommodation?.addedPhotos?.[0] && (
@@ -76,7 +76,7 @@ const MyBookingsPage = () => {
 
             <div>
               {bookings?.length > 0 && bookings.filter(booking => booking.accommodation?._id === undefined).map(booking => (
-                <Link to={`/account/bookings/${booking._id}`} key={booking._id} className='flex gap-5 p-4  bg-gray-100 border border-gray-300 rounded-2xl overflow-hidden mt-4'>
+                <Link to={`/account/bookings/${booking._id}`} key={booking._id} className='flex gap-2 md:gap-5 p-4  bg-gray-100 border border-gray-300 rounded-2xl overflow-hidden mt-4'>
 
                   <div  className='md:w-80 w-48 object-center'>
                     <img 

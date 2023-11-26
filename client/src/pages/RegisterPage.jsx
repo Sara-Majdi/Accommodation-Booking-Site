@@ -34,13 +34,13 @@ const RegisterPage = () => {
       try{
         const response = await axios.post('/register', userData);
         console.log(response.data);
-        alert('Registration Successful. Now you can log in.');
+        alert('Registration Successful. Now You Can Log In.');
         setIsRegistered(true);
         
       } catch (error) {
   
         console.log(error.response.data);
-        alert('Registration Failed. Please try again later.');
+        alert('Registration Failed. There Is Already A User With The Same Email.\nPlease Log In With Your Previously Registered Account.');
       }
     }
   }
