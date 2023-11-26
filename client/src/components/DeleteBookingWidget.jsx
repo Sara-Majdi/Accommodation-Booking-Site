@@ -32,27 +32,27 @@ const DeleteBookingWidget = ({booking}) => {
             
             <div className='mt-4 border border-gray-300 rounded-2xl px-3 py-8'>
             <div className="flex justify-between px-2">
-                <p className="font-normal text-xl underline">Guest Name</p>
+                <p className="font-normal text-xl underline mr-4">Guest Name</p>
                 <p className="font-semibold text-xl ">{booking.guestsName}</p>
             </div>
 
             <div className="flex justify-between mt-4 px-2">
-                <p className="font-normal text-xl underline">Guest Phone Number</p>
+                <p className="font-normal text-xl underline mr-4">Guest Phone Number</p>
                 <p className="font-semibold text-xl  ">{booking.guestsPhoneNum}</p>
             </div>
 
             <div className="flex justify-between mt-4 px-2">
-                <p className="font-normal text-xl underline">Number Of Guests</p>
+                <p className="font-normal text-xl underline mr-8">Number Of Guests</p>
                 <p className="font-semibold text-xl  ">{booking.guestsNum}</p>
             </div>
 
             <div className="flex justify-between mt-4 px-2">
-                <p className="font-normal text-xl underline whitespace-pre-wrap">RM{booking.accommodation.price.toLocaleString()} x {booking.numOfNights} Nights</p>
+                <p className="font-normal text-xl underline mr-4 whitespace-pre-wrap">RM{booking.accommodation.price.toLocaleString()} x {booking.numOfNights} Nights</p>
                 <p className="font-semibold text-xl  ">RM{booking.accommodationPriceForNumOfNights.toLocaleString()}</p>
             </div>
 
             <div className="flex justify-between mt-4 px-2">
-                <p className="font-normal text-xl underline">SM Booking Service Fee</p>
+                <p className="font-normal text-xl underline mr-4">SM Booking Service Fee</p>
                 <p className="font-semibold text-xl  ">RM{booking.serviceFee.toLocaleString()}</p>
             </div>
 

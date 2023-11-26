@@ -83,8 +83,8 @@ const BookingWidget = ({accommodationsDetails}) => {
         <h1 className="text-2xl py-2 text-center font-semibold mb-2">RM{accommodationsDetails.price}<span className="font-normal text-xl"> per night</span></h1>
         
         <div className="border rounded-2xl">
-            <div className="flex justify-evenly">
-                <div className="px-4 py-3 border-r w-full">
+            <div className="sm:flex justify-evenly">
+                <div className="px-4 py-3 border-b sm:border-r w-full">
                     <label className="font-medium">Check In: </label>
                     <input type="date" value={checkInDate} onChange={(event) => setcheckInDate(event.target.value)} />
                 </div>
@@ -125,12 +125,12 @@ const BookingWidget = ({accommodationsDetails}) => {
         {numOfNights > 0 &&  (
             <div>
                 <div className="flex justify-between px-2">
-                    <p className="font-normal text-xl underline">RM{accommodationsDetails.price.toLocaleString()} x {numOfNights} Nights</p>
+                    <p className="font-normal text-xl underline mr-8">RM{accommodationsDetails.price.toLocaleString()} x {numOfNights} Nights</p>
                     <p className="font-medium text-xl ">RM{accommodationPriceForNumOfNights.toLocaleString()}</p>
                 </div>
 
                 <div className="flex justify-between mt-4 px-2">
-                    <p className="font-normal text-xl underline">SM Booking Service Fee</p>
+                    <p className="font-normal text-xl underline mr-8">SM Booking Service Fee</p>
                     <p className="font-medium text-xl ">RM{serviceFee.toLocaleString()}</p>
                 </div>
 

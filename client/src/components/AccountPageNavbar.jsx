@@ -23,7 +23,7 @@ const AccountPageNavbar = () => {
 
 
   return (
-    <nav className="w-full flex mt-8 gap-4 justify-center mb-6">
+    <nav className="w-full flex flex-col sm:flex-row mt-8 gap-2 justify-center mb-6">
         <Link to={'/account'} className={linkClasses('profile')} >
           
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
