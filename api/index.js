@@ -161,7 +161,8 @@ app.get('/user-accommodations', (req, res) => {
         if (err) throw err;
         const {id} = userData;
         //Places registered under the same 'owner' id will all be sent and displayed at '/account/accommodations'
-        res.json( await Accommodation.find({owner: id}));
+        const userAccommodations = await Accommodation.find({owner: id});
+        res.json([userAccommodations.length, userAccommodations]);
     });
 
 });
@@ -223,7 +224,6 @@ app.get('/all-accommodations', async (req, res) => {
 
 // Registering 'bookings' that user have added in the database
 app.post('/bookings', (req, res) => {
-
     const {token} = req.cookies; //Destructuring 
     const {
         accommodation, checkInDate, 
@@ -267,4 +267,4 @@ app.delete('/bookings/:id', async (req, res) => {
 
 
 // Server listening to port 4000
-app.listen(4000);
+app.listen(4000)
