@@ -9,7 +9,7 @@ const MyAccommodation = () => {
   useEffect(() => {
     // Getting Accommodations details that user added, from the database, to be displayed at '/account/accommodations'
     axios.get('/user-accommodations').then((response) => {
-      setAccommodations(response.data);
+      setAccommodations(response.data[1]);
     });
   }, []);
 

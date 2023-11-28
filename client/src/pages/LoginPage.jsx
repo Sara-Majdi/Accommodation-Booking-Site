@@ -36,12 +36,7 @@ const LoginPage = () => {
         alert('Login Successful');
         setLoggedIn(true);
       }
-
-      
-      
-    }
-
-    
+    } 
   }
 
   if(isLoggedIn) {

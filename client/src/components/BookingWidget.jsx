@@ -70,8 +70,6 @@ const BookingWidget = ({accommodationsDetails}) => {
             alert('You Have Successfully Booked This Accommodation');
             setRedirect('/account/bookings/' + bookingID);
         }
-        
-        
     }
 
     if (redirect) {
