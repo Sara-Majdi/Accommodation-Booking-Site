@@ -65,7 +65,8 @@ const BookingWidget = ({accommodationsDetails}) => {
         } 
         else {
             const response = await axios.post('/bookings', bookingData);
-            const bookingID = response.data._id;
+            const bookingID = response.data[1]._id;
+            // console.log(bookingID)
             alert('You Have Successfully Booked This Accommodation');
             setRedirect('/account/bookings/' + bookingID);
         }
