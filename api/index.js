@@ -46,11 +46,11 @@ app.post('/register', async (req, res) => {
             password:bcrypt.hashSync(password, bcryptSalt), //Encrypting the password so the real password cant be seen in the database
         });
 
-        res.json(userDoc);
+        res.json(['Successfully Registered New User',userDoc]);
         
 
     } catch (e) {
-        res.status(422).json(e);
+        res.status(422).json('Registration Failed. There Is Already A User With The Same Email. Please Log In With Your Previously Registered Account.');
     }
 
 });
@@ -68,7 +68,7 @@ app.post('/login', async(req, res) => {
                 id: userDoc._id
             }, jwtSecret, {}, (err, token) => {
                 if (err) throw err;
-                res.cookie('token', token).json(userDoc);
+                res.cookie('token', token).json(['Successfully Logged In', userDoc]);
             })
             
         } else {
@@ -98,7 +98,7 @@ app.get('/profile', (req, res) => {
 
 // Logout Page 
 app.post('/logout', (req, res) => {
-    res.cookie('token', '').json(true);
+    res.cookie('token', '').json('Succesfully Logged Out');
 });
 
 
@@ -150,7 +150,7 @@ app.post('/accommodations', (req, res) => {
             checkInTime, checkOutTime, maxGuests, price,
         });
 
-        res.json(placeDoc);
+        res.json(['Successfully Added New Accommodation', placeDoc]);
     });
 })
 
@@ -166,7 +166,7 @@ app.get('/user-accommodations', (req, res) => {
 
 });
 
-// Saving and Sending Accommodations details that users added, from the database, to be displayed at '/account/accommodations/:id'
+// Sending Accommodations details that users added, from the database, to be displayed at '/account/accommodations/:id'
 app.get('/accommodations/:id', async (req, res) => {
     const {id} = req.params; //Getting the id from params
     res.json(await Accommodation.findById(id)); // Finding the id in the database 
@@ -192,7 +192,7 @@ app.put('/accommodations', async (req, res) => {
                 checkInTime, checkOutTime, maxGuests, price
             });
             await placeDoc.save();
-            res.json('Ok');
+            res.json(placeDoc);
         };
     });
 });
@@ -208,14 +208,16 @@ app.delete('/accommodations/:id', async (req, res) => {
         const deleteAccommodation = await Accommodation.findByIdAndDelete(id);
         res.json([deleteBooking, deleteAccommodation]); 
     } else {
-        res.json(await Accommodation.findByIdAndDelete(id));
+        const deleteAccommodation = await Accommodation.findByIdAndDelete(id);
+        res.json(["Succesfully Deleted Accommodation", deleteAccommodation]);
     }
     
 }); 
 
 // Sending Accommodations details that ALL USERS added, from the database, to be displayed at Home Page
 app.get('/all-accommodations', async (req, res) => {
-    res.json(await Accommodation.find().maxTimeMS(30000)); // Set timeout to 30 seconds
+    const allAccommodations = await Accommodation.find().maxTimeMS(30000); // Set timeout to 30 seconds
+    res.json([allAccommodations.length, allAccommodations]); 
 
 });
 
@@ -240,7 +242,7 @@ app.post('/bookings', (req, res) => {
             totalPrice, user:userData.id,
         }); 
     
-        res.json(bookingDoc); 
+        res.json(['Successfully Added New Booking',bookingDoc]); 
     });
 });
 
@@ -251,14 +253,16 @@ app.get('/bookings', (req, res) => {
     jwt.verify(token, jwtSecret, {}, async (err, userData)=> {
         if (err) throw err;
         //Bookings registered under the same user "id" will all be sent and displayed at '/account/bookings'
-        res.json( await Booking.find({user:userData.id}).populate('accommodation')) ;
+        const allBookings = await Booking.find({user:userData.id}).populate('accommodation');
+        res.json( [allBookings.length, allBookings]) ;
     });
 })
 
 // Deleting Booking that users added from the database
 app.delete('/bookings/:id', async (req, res) => {
     const {id} = req.params; //Getting the id from params
-    res.json(await Booking.findByIdAndDelete(id));
+    const deleteBooking = await Booking.findByIdAndDelete(id) ;
+    res.json(["Succesfully Deleted Booking", deleteBooking])
 })
 
 

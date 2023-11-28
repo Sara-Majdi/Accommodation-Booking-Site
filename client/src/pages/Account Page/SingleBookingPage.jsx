@@ -17,7 +17,7 @@ const SingleBookingPage = () => {
 
   useEffect(()=> {
     axios.get('/bookings').then(result => {
-      const bookingDetails = result.data.find(({_id}) => _id === bookingID);
+      const bookingDetails = result.data[1].find(({_id}) => _id === bookingID);
       if (bookingDetails){
         setBooking(bookingDetails);
       }
