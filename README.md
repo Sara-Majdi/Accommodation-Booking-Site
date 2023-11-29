@@ -24,7 +24,7 @@ testing password = sara1234
 ## Home Page </br>
 1. Navbar (Its across all pages) 
 2. All the accommodations are in grid layout 
-3. Search Functionality (Using .filter() and .includes() function, show code)
+3. Search Functionality (Using .filter() and .includes() function, show code) -> **Homepage**
 4. Search with capital and small letters also can, also can search middle words 
 5. Mobile Responsive </br> </br>
 
