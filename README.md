@@ -43,7 +43,7 @@ testing password = sara1234
 2. First enter wrong Email, then show 'Login Failed' message
 3. Now enter wrong password, then show 'Login Failed' message, then only Login correctly
 4. Show code, upon clicking Login button, mongoose User Model, will find for the user email (user email is unique and it is 
-    given when users register) -> **(show User.js)**
+    given when users register) -> **(show index.js & User.js)**
 5. If user is registered, then login succesful, vice versa
 6. Login now
 7. User will be redirected to Home Page and user name will be added on the Navbar (right side)
