@@ -82,7 +82,7 @@ testing password = sara1234
 
 ## Single Accommodation Page </br>
 1. Accommodation Details such as Title Description, Extra Info, Booking Details
-2. Google Maps Location (Show code, the query part)
+2. Google Maps Location (Show code, the query part) -> **AccommodationTitleAndAddress.jsx**
 3. Photos in Grid Layout
 4. Click on 'Show more' button (Only appears when there are 5 or more photos) (show code)     (mobile responsive)
 5. If correct date filled then extra inputs and prices will be displaye
