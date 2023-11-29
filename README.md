@@ -31,9 +31,9 @@ testing password = sara1234
 
 ## Register Page </br>
 1. Need to have '@' for email input (in-built html validation)
-2. Show backend code, users are registered with mongoose with User.create() function
+2. Show backend code, users are registered with mongoose with User.create() function -> **index.js**
 3. Passwords are encrypted (show demo in database)
-4. Show isEmpty Validations
+4. Show isEmpty Validations -> **client/RegisterPage**
 5. Create a new user for Ms Vimala
 6. Mobile Responsive </br> </br>
 
